@@ -93,9 +93,9 @@ export default function RecargaStep1() {
                 <Image
                   src="/imgi_1_logo-tim-R4m9PIUL.png"
                   alt="TIM"
-                  width={168}
-                  height={72}
-                  className="h-auto w-[154px] md:w-48"
+                  width={235}
+                  height={100}
+                  className="h-auto w-[215px] md:w-[268px]"
                 />
 
               <p className="mt-2.5 inline-flex items-center gap-1.5 text-[13px] md:text-[14px] font-medium text-white">

@@ -65,19 +65,19 @@ export default function Header() {
               <Image
                 src="/imgi_1_logo-tim-R4m9PIUL.png"
                 alt="TIM"
-                width={96}
-                height={48}
+                width={134}
+                height={60}
                 priority
-                className="h-[43px] w-auto"
+                className="h-[60px] w-auto"
               />
             </span>
             <Image
               src="/imgi_1_logo-tim-R4m9PIUL.png"
               alt="TIM"
-              width={120}
-              height={48}
+              width={168}
+              height={67}
               priority
-              className="hidden md:block h-12 w-auto"
+              className="hidden md:block h-[67px] w-auto"
             />
           </Link>
 
