@@ -267,7 +267,7 @@ export async function createPagouTransaction(
       typeof data === "object" && data && "message" in data
         ? String((data as { message: unknown }).message)
         : `Pagou retornou HTTP ${resp.status}`;
-    console.error("[pagou] POST /transactions failed:", resp.status, data);
+    console.error("[pagou] POST /transactions failed:", resp.status, JSON.stringify(data, null, 2));
     throw new Error(`${msg} (HTTP ${resp.status})`);
   }
 
