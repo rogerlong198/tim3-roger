@@ -61,26 +61,23 @@ export default function Header() {
         <div className="mx-auto flex h-[60px] max-w-[1280px] items-center justify-between px-4 md:h-[70px] md:px-6">
           <Link href="/" aria-label="Ir para início" className="flex items-center gap-2">
             {/* Mobile: icon + TIM | Desktop: logo completo */}
-            <span className="flex items-center gap-1.5 md:hidden">
+            <span className="flex items-center md:hidden">
               <Image
-                src="/logo-tim-icon.svg"
+                src="/logo-tim-oficial.png"
                 alt="TIM"
-                width={24}
-                height={24}
+                width={80}
+                height={40}
                 priority
-                className="h-6 w-6"
+                className="h-9 w-auto"
               />
-              <span className="text-[18px] font-black tracking-tight text-white">
-                TIM
-              </span>
             </span>
             <Image
-              src="/logo-tim-recarga.svg"
-              alt="TIM Recarga"
-              width={160}
-              height={32}
+              src="/logo-tim-oficial.png"
+              alt="TIM"
+              width={100}
+              height={40}
               priority
-              className="hidden md:block h-8 w-auto"
+              className="hidden md:block h-10 w-auto"
             />
           </Link>
 

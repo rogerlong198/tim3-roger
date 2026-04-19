@@ -90,18 +90,13 @@ export default function RecargaStep1() {
             className="order-2 lg:order-2 -mt-1 lg:mt-0"
           >
             <div className="flex flex-col items-center">
-              <div className="flex items-center gap-2">
                 <Image
-                  src="/logo-tim-icon.svg"
+                  src="/logo-tim-oficial.png"
                   alt="TIM"
-                  width={28}
-                  height={28}
-                  className="h-7 w-7"
+                  width={140}
+                  height={60}
+                  className="h-auto w-32 md:w-40"
                 />
-                <span className="text-[24px] md:text-[28px] font-black text-white">
-                  Recarga
-                </span>
-              </div>
 
               <p className="mt-2.5 inline-flex items-center gap-1.5 text-[13px] md:text-[14px] font-medium text-white">
                 Preencha seus dados com{" "}
@@ -174,7 +169,7 @@ export default function RecargaStep1() {
 
             <div className="mt-4 flex justify-center">
               <Image
-                src="/duas-mulheres-whatsapp.svg"
+                src="/whatsapp-real.png"
                 alt="Duas clientes TIM comemorando recarga com WhatsApp liberado"
                 width={320}
                 height={336}
