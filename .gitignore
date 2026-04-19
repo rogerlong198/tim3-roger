@@ -36,3 +36,5 @@ supabase/migrations/002_seed_secrets.sql
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.vercel

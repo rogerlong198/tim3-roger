@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { getSupabaseAdmin } from "@/lib/supabase-server";
 import { getSecret } from "@/lib/secrets";
 import { normalizeStatus } from "@/lib/pagou";
 
@@ -49,24 +48,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "objectId ausente" }, { status: 400 });
     }
 
-    const supabase = getSupabaseAdmin();
-    const update: Record<string, unknown> = {
-      status: statusRaw || "updated",
-      postback_raw: body,
-    };
-    if (normalized === "paid") {
-      update.status = "paid";
-      update.paid_at = new Date().toISOString();
-    }
-
-    const { error } = await supabase
-      .from("pix_transactions")
-      .update(update)
-      .eq("pagou_id", pagouId);
-
-    if (error) {
-      console.error("[webhook] supabase update failed", error);
-      return NextResponse.json({ error: error.message }, { status: 500 });
+    const { getPixMockStore } = await import("@/lib/pix-store-memory");
+    const store = getPixMockStore();
+    
+    // Tentamos encontrar pelo pagouId (que na nossa memória usamos como chave)
+    const record = store.get(pagouId);
+    if (record && normalized === "paid") {
+      record.paidAt = Date.now();
     }
 
     return NextResponse.json({ ok: true, pagouId, status: normalized });

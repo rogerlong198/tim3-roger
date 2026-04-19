@@ -10,7 +10,6 @@ import {
   extractPixCode,
   extractPixQrUrl,
 } from "@/lib/pagou";
-import { getSupabaseAdmin } from "@/lib/supabase-server";
 import { getSecret } from "@/lib/secrets";
 import { generateValidCpf } from "@/lib/cpf";
 
@@ -142,50 +141,21 @@ export async function POST(req: Request) {
       throw new Error("Pagou retornou transação sem copia-e-cola PIX.");
     }
 
-    // Grava na Supabase; se a migração não rodou, cai pra memória.
-    let internalId: string | null = null;
-    try {
-      const supabase = getSupabaseAdmin();
-      const { data: row, error } = await supabase
-        .from("pix_transactions")
-        .insert({
-          pagou_id: String(pagouTx.id),
-          phone: phoneDigits,
-          phone_masked: phoneMasked,
-          amount_cents: amountCents,
-          description: body.description,
-          status: pagouTx.status ?? "waiting_payment",
-          qr_code: qrCode,
-          qr_code_url: qrCodeUrl,
-          expires_at: expiresAtDate.toISOString(),
-        })
-        .select("id")
-        .single();
-
-      if (!error && row?.id) internalId = row.id as string;
-      else if (error) console.warn("[api/pix/create] Supabase indisponível, usando memória:", error.message);
-    } catch (e) {
-      console.warn("[api/pix/create] Supabase erro:", e instanceof Error ? e.message : e);
-    }
-
-    // Fallback: armazena em memória usando o pagou_id como chave local
-    if (!internalId) {
-      internalId = String(pagouTx.id);
-      // reutiliza o mock store pra guardar os dados locais
-      const { getPixMockStore } = await import("@/lib/pix-store-memory");
-      getPixMockStore().set(internalId, {
-        id: internalId,
-        phone: phoneDigits,
-        valor: body.valor,
-        description: body.description,
-        createdAt: Date.now(),
-        expiresAt: expiresAtDate.toISOString(),
-        copyPaste: qrCode,
-        qrCode,
-        // marcador pra o status route saber que é pagou real
-        pagouId: String(pagouTx.id),
-      } as unknown as Parameters<ReturnType<typeof getPixMockStore>["set"]>[1]);
-    }
+    // Armazena em memória usando o pagou_id como chave local (id interno)
+    const internalId = String(pagouTx.id);
+    const { getPixMockStore } = await import("@/lib/pix-store-memory");
+    getPixMockStore().set(internalId, {
+      id: internalId,
+      phone: phoneDigits,
+      valor: body.valor,
+      description: body.description,
+      createdAt: Date.now(),
+      expiresAt: expiresAtDate.toISOString(),
+      copyPaste: qrCode,
+      qrCode,
+      // marcador pra o status route saber que é pagou real
+      pagouId: String(pagouTx.id),
+    } as any);
 
     return NextResponse.json({
       pixId: internalId,
