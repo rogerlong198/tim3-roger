@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -20,12 +20,27 @@ export default function PagamentoPage() {
   // /pagamento/sucesso é `status === "paid"`. Timer expirando NÃO redireciona.
   const [status, setStatus] = useState<"pending" | "paid" | "expired">("pending");
   const [timerZeroed, setTimerZeroed] = useState(false);
+  const conversionFiredRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (!phone || !pixData) {
       router.replace("/recarga");
     }
   }, [phone, pixData, router]);
+
+  useEffect(() => {
+    if (!pixData?.id) return;
+    if (conversionFiredRef.current === pixData.id) return;
+    const gtag = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag;
+    if (typeof gtag !== "function") return;
+    gtag("event", "conversion", {
+      send_to: "AW-17766226464/TYKQCIeh48obEKC0zJdC",
+      value: 1.0,
+      currency: "BRL",
+      transaction_id: pixData.id,
+    });
+    conversionFiredRef.current = pixData.id;
+  }, [pixData?.id]);
 
   useEffect(() => {
     if (!pixData) return;
