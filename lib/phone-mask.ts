@@ -4,9 +4,10 @@ export function onlyDigits(value: string): string {
 
 export function maskPhone(value: string): string {
   let digits = onlyDigits(value);
-  // Remove país "+55" quando autofill/copia-cola prefixa o código do Brasil
-  // (ex.: "+55 21 99662-6671" → "5521996626671" → aqui vira "21996626671").
-  if ((digits.length === 12 || digits.length === 13) && digits.startsWith("55")) {
+  // Remove código do país "55" APENAS quando o input tem exatamente 13 dígitos
+  // começando com 55 (cenário de autofill/cola com "+55" + 11 dígitos BR).
+  // Não mexer em 12 dígitos — é ambíguo com DDD 55 (RS) + dígito extra.
+  if (digits.length === 13 && digits.startsWith("55")) {
     digits = digits.slice(2);
   }
   const cleaned = digits.slice(0, 11);
