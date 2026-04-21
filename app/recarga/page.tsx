@@ -121,6 +121,16 @@ export default function RecargaStep1() {
               </button>
             </form>
 
+            <div className="mt-5 flex justify-center">
+              <Image
+                src="/imgi_2_tim-pre-xip-promo-Ck4FnecT.png"
+                alt="Promoção TIM Pré XIP 5G"
+                width={480}
+                height={260}
+                className="h-auto w-full max-w-[420px] rounded-2xl"
+              />
+            </div>
+
             <div className="mt-6 flex flex-col items-center">
               <p className="inline-flex items-center gap-1.5 text-[13px] md:text-[14px] font-medium text-white">
                 Preencha seus dados com{" "}
