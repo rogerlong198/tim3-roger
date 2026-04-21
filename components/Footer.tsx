@@ -9,7 +9,7 @@ export default function Footer() {
           <div>
             <Link href="/" aria-label="Início">
               <Image
-                src="/imgi_1_logo-tim-R4m9PIUL.png"
+                src="/imgi_1_size_960_16_9_tim-logotipo8-removebg-preview.png"
                 alt="TIM Recarga"
                 width={160}
                 height={32}
@@ -53,8 +53,10 @@ export default function Footer() {
         </div>
 
         <div className="mt-10 border-t border-white/10 pt-6">
-          <p className="text-center text-xs text-white/60">
-            © {new Date().getFullYear()} TIM Recarga — Este é um site de demonstração. Não substitui os canais oficiais da TIM S/A.
+          <p className="text-center text-xs text-white/60 leading-relaxed">
+            © TIM S/A. Todos os direitos reservados. CNPJ: 02.421.421/0001-11 - Insc. Municipal: 0261388-3 - Insc. Estadual: 86.092.08-5
+            <br />
+            Av Joao Cabral de Mello Neto, 850 - Bl 01 - Salas 501 a 1208. Barra da Tijuca - Rio de Janeiro - RJ - CEP: 22775-057
           </p>
         </div>
       </div>

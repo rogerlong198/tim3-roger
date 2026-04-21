@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import CookieBanner from "@/components/CookieBanner";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -18,8 +19,8 @@ export const metadata: Metadata = {
     "Recarregue seu celular TIM com PIX de forma rápida e segura. Bônus semanal de até 50GB. Crédito em até 30 minutos para qualquer DDD.",
   keywords: ["recarga tim", "recarregar tim", "recarga celular", "pix tim", "bônus tim"],
   icons: {
-    icon: [{ url: "/imgi_1_logo-tim-R4m9PIUL.png", type: "image/png" }],
-    apple: "/imgi_1_logo-tim-R4m9PIUL.png",
+    icon: [{ url: "/imgi_1_size_960_16_9_tim-logotipo8-removebg-preview.png", type: "image/png" }],
+    apple: "/imgi_1_size_960_16_9_tim-logotipo8-removebg-preview.png",
   },
   openGraph: {
     title: "TIM Recarga — PIX em até 30 minutos",
@@ -72,6 +73,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
+        <CookieBanner />
       </body>
     </html>
   );

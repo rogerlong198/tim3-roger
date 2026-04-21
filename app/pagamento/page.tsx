@@ -106,7 +106,7 @@ export default function PagamentoPage() {
           {/* Logo inline compacto */}
           <div className="flex items-center justify-center gap-2">
             <Image
-              src="/imgi_1_logo-tim-R4m9PIUL.png"
+              src="/imgi_1_size_960_16_9_tim-logotipo8-removebg-preview.png"
               alt="TIM"
               width={24}
               height={24}
