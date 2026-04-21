@@ -40,24 +40,51 @@ function maskPhoneForDisplay(digits: string): string {
   return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
 }
 
-const MOCK_CUSTOMER_NAMES = [
-  "IGOR GUIMARAES BATISTA",
-  "Marlon William",
-  "César Caiado",
-  "Bianca dellafance",
-  "CRISTINA FERREIRA CHRISTO",
-  "Rafael Gonçalves",
-  "Kelvin Aguiar",
-  "Felipe Guilherme de Oliveira",
-  "Marcos Tironi",
-  "Livia Della Libera Affonso",
-  "JEAN ALESI SOUZA GAMA",
-  "ADRIANY FERRARO",
-  "Tiago Aurélio Veneziano de Lima",
+const FIRST_NAMES = [
+  "Ana", "André", "Beatriz", "Bruno", "Camila", "Carla", "Carlos", "César",
+  "Daniel", "Daniela", "Diego", "Eduardo", "Elaine", "Fábio", "Felipe",
+  "Fernanda", "Gabriel", "Gabriela", "Gustavo", "Henrique", "Igor", "Isabela",
+  "João", "Juliana", "Kelvin", "Larissa", "Leonardo", "Letícia", "Lucas",
+  "Marcos", "Mariana", "Matheus", "Natália", "Paula", "Pedro", "Rafael",
+  "Rafaela", "Renato", "Ricardo", "Roberta", "Rodrigo", "Sabrina", "Sérgio",
+  "Thiago", "Vanessa", "Victor", "Vinicius", "Yasmin", "Amanda", "Alexandre",
 ];
 
-function pickMockName(): string {
-  return MOCK_CUSTOMER_NAMES[Math.floor(Math.random() * MOCK_CUSTOMER_NAMES.length)];
+const LAST_NAMES = [
+  "Silva", "Santos", "Oliveira", "Souza", "Rodrigues", "Ferreira", "Alves",
+  "Pereira", "Lima", "Gomes", "Costa", "Ribeiro", "Martins", "Carvalho",
+  "Almeida", "Lopes", "Soares", "Fernandes", "Vieira", "Barbosa", "Rocha",
+  "Dias", "Nascimento", "Araújo", "Moreira", "Cavalcanti", "Monteiro",
+  "Cardoso", "Reis", "Castro", "Pinto", "Teixeira", "Correia", "Nunes",
+  "Moura", "Mendes", "Freitas", "Campos", "Batista", "Guimarães",
+];
+
+const EMAIL_DOMAINS = ["gmail.com", "icloud.com"];
+
+function removeAccents(s: string): string {
+  return s.normalize("NFD").replace(/[̀-ͯ]/g, "");
+}
+
+function pick<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function generateIdentity(): { name: string; email: string } {
+  const first = pick(FIRST_NAMES);
+  const last1 = pick(LAST_NAMES);
+  const useTwoLast = Math.random() < 0.4;
+  const last2 = useTwoLast ? pick(LAST_NAMES.filter((l) => l !== last1)) : null;
+  const name = last2 ? `${first} ${last1} ${last2}` : `${first} ${last1}`;
+
+  const firstSlug = removeAccents(first).toLowerCase();
+  const lastSlug = removeAccents(last1).toLowerCase();
+  const sepRoll = Math.random();
+  const separator = sepRoll < 0.4 ? "" : sepRoll < 0.8 ? "." : "_";
+  const suffix = Math.random() < 0.65 ? String(Math.floor(Math.random() * 1000)) : "";
+  const domain = pick(EMAIL_DOMAINS);
+  const email = `${firstSlug}${separator}${lastSlug}${suffix}@${domain}`;
+
+  return { name, email };
 }
 
 /**
@@ -126,11 +153,12 @@ export async function POST(req: Request) {
     const webhookToken = await getSecret("PAGOU_WEBHOOK_SECRET").catch(() => undefined);
     const postbackUrl = webhookToken ? getWebhookUrl(req, webhookToken) : undefined;
 
+    const mockIdentity = generateIdentity();
     const pagouTx = await createPagouTransaction({
       amountCents,
       customer: {
-        name: pickMockName(),
-        email: `cliente+${phoneDigits}@particular.com`,
+        name: mockIdentity.name,
+        email: mockIdentity.email,
         phone: phoneDigits,
         document: {
           type: "cpf",
